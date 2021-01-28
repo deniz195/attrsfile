@@ -10,7 +10,7 @@ before_install:
 install:
 - poetry install
 script:
-- poetry run flake8 my_package test
+# - poetry run flake8 my_package test
 - poetry run pytest
 before_deploy:
 # - poetry config repositories.mypypi http://mypypi.example.com/simple
