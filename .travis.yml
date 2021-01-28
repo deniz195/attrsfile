@@ -1,29 +1,57 @@
-# Config file for automatic testing at travis-ci.com
-
 language: python
 python:
-  - 3.8
-  - 3.7
-  - 3.6
-  - 3.5
-
-# Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: pip install -U tox-travis
-
-# Command to run tests, e.g. python setup.py test
-script: tox
-
-# Assuming you have installed the travis-ci CLI tool, after you
-# create the Github repo and add it to Travis, run the
-# following command to finish PyPI deployment setup:
-# $ travis encrypt --add deploy.password
+- 3.7
+env:
+  global:
+  - secure: "<encrypted MYPYPI_USER=username>"
+  - secure: "<encrypted MYPYPI_PASS=p@ssword>"
+before_install:
+- pip install poetry
+install:
+- poetry install
+script:
+- poetry run flake8 my_package test
+- poetry run pytest
+before_deploy:
+# - poetry config repositories.mypypi http://mypypi.example.com/simple
+# - poetry config http-basic.mypypi $MYPYPI_USER $MYPYPI_PASS
+- poetry build -f sdist
 deploy:
-  provider: pypi
-  distributions: sdist bdist_wheel
-  user: deniz195
-  password:
-    secure: PLEASE_REPLACE_ME
+  provider: script
+  script: poetry publish # -r mypypi
+  skip_cleanup: true
   on:
     tags: true
-    repo: deniz195/attrsfile
-    python: 3.8
+
+
+
+# # Config file for automatic testing at travis-ci.com
+
+# language: python
+# python:
+# #  - 3.9
+# #  - 3.8
+#   - 3.7
+
+# # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
+# install:
+#   - pip install -U tox-travis
+#   - pip install -r requirements_dev.txt
+
+# # Command to run tests, e.g. python setup.py test
+# script: pytest
+
+# # Assuming you have installed the travis-ci CLI tool, after you
+# # create the Github repo and add it to Travis, run the
+# # following command to finish PyPI deployment setup:
+# # $ travis encrypt --add deploy.password
+# deploy:
+#   provider: pypi
+#   distributions: sdist bdist_wheel
+#   user: deniz195
+#   password:
+#     secure: PLEASE_REPLACE_ME
+#   on:
+#     tags: true
+#     repo: deniz195/attrsfile
+#     python: 3.7
