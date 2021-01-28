@@ -30,7 +30,7 @@ A file mapper for attrs classes.
 Features
 --------
 
-* TODO
+* Integrate cattrs
 
 Conribute
 --------
