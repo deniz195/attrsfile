@@ -1,6 +1,7 @@
 '''Main module.'''
 
 import logging
+from pathlib import Path
 
 import attr
 import cattr
@@ -36,10 +37,14 @@ class MapperFactory:
 
         return filename
 
-    def load(self, cls, **data):
+    def load(self, cls, use_default=False, **data):
         filename = self._filename(data)
 
         module_logger.debug(f'load {cls} from {filename} (from {self.path_format})')
+
+        if not Path(filename).exists() and use_default:
+            module_logger.debug(f'File does not exist. Using default!')
+            return cls()
 
         with open(filename, 'r') as s:
             yaml = YAML()

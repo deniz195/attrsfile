@@ -49,7 +49,7 @@ def test_d(cd_chdir):
     Path('abc99.yaml').unlink()
 
 
-def test_attr():
+def test_attr(cd_chdir):
     '''Testing basic use case with unformatted filename.'''
 
     @attrsfile('xyz.yaml')
@@ -68,7 +68,7 @@ def test_attr():
     Path('xyz.yaml').unlink()
 
 
-def test_nested_attr():
+def test_nested_attr(cd_chdir):
     '''Testing basic use case with nested classes.'''
 
     @attr.s()
@@ -92,6 +92,22 @@ def test_nested_attr():
     assert x1 == x2
 
     Path('xyz_ab.yaml').unlink()
+
+
+def test_no_file(cd_chdir):
+    '''Testing basic use case with unformatted filename.'''
+
+    @attrsfile('xyz000000000000.yaml')
+    @attr.s()
+    class XYZ:
+        x = attr.ib(1)
+        y = attr.ib(2)
+
+    with pytest.raises(FileNotFoundError):
+        x = XYZ.load()
+
+    x = XYZ.load(use_default=True)
+    assert x == XYZ()
 
 
 def test_import():
