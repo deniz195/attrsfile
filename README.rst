@@ -32,6 +32,18 @@ Features
 
 * TODO
 
+Conribute
+--------
+
+To install the development environement use `poetry` and follow these steps:
+
+```bash
+git clone https://github.com/deniz195/attrsfile`
+cd attrsfile
+poetry install
+poetry run pre-commit install
+```
+
 Credits
 -------
 
