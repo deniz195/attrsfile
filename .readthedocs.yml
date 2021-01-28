@@ -17,7 +17,7 @@ sphinx:
 formats:
   - pdf
 
-  python:
-   version: 3.7
-   install:
-   - requirements: requirements.txt
+python:
+  version: 3.7
+  install:
+  - requirements: requirements.txt
