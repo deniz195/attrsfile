@@ -3,6 +3,7 @@
 import logging
 
 import attr
+import cattr
 from ruamel.yaml import YAML
 
 module_logger = logging.getLogger(__name__)
@@ -50,7 +51,7 @@ class MapperFactory:
         if hasattr(cls, 'from_dict'):
             return cls.from_dict(data)
         elif attr.has(cls):
-            return cls(**data)
+            return cattr.structure(data, cls)
         else:
             return cls(**data)
 
@@ -58,7 +59,7 @@ class MapperFactory:
         if hasattr(obj, 'to_dict'):
             return obj.to_dict()
         elif attr.has(obj):
-            return attr.asdict(obj)
+            return cattr.unstructure(obj)
         else:
             return dict(obj)
 
